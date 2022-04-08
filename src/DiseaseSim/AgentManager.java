@@ -15,8 +15,8 @@ public class AgentManager {
      * Initialize Agents w/ positions specified by board type and give agents some kind of state (sick vs. vulnerable)
      */
     private void initAgents() {
-        ConfigInfo.BoardType board = configInfo.getBoardType();
-        int numSick = configInfo.getInitSick();
+        BoardType board = configInfo.boardType;
+        int numSick = configInfo.initSick;
         switch (board) {
             case RANDOM -> initRandom();
         }
@@ -38,9 +38,9 @@ public class AgentManager {
      * Initialize agents randomly across board
      */
     private void initRandom() {
-        int width = configInfo.getDimWidth();
-        int height = configInfo.getDimHeight();
-        int numAgents = configInfo.getNumAgents();
+        int width = configInfo.dimWidth;
+        int height = configInfo.dimHeight;
+        int numAgents = configInfo.numAgents;
 
         for(int i = 0; i < numAgents; i++) {
             int x = (int)(Math.random() * width);
@@ -76,6 +76,6 @@ public class AgentManager {
         int y_2 = a2.getYPos();
         double x_dist = (x_1-x_2)^2;
         double y_dist = (y_1-y_2)^2;
-        return (Math.sqrt(x_dist+y_dist)) <= configInfo.getExposureDistance();
+        return (Math.sqrt(x_dist+y_dist)) <= configInfo.exposureDistance;
     }
 }
