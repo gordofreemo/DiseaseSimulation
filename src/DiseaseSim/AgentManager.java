@@ -20,18 +20,11 @@ public class AgentManager {
         switch (board) {
             case RANDOM -> initRandom();
         }
-
         for(Agent agent : agentList) computeNeighbours(agent);
 
-        // Set the randomly sick agents - need array of indices to guarantee uniqueness of chosen indices
-        ArrayList<Integer> agentIndices = new ArrayList<>();
-        for(int i = 0; i < agentList.size(); i++) agentIndices.add(i, i);
-        Collections.shuffle(agentIndices);
-        for(int i = 0; i < numSick; i++) {
-            int index = agentIndices.get(i);
-            agentList.get(index).setState(AgentState.SICK);
-        }
-
+        // Set the randomly sick agents
+        Collections.shuffle(agentList); //For randomly assigning the sick
+        for(int i = 0; i < numSick; i++) agentList.get(i).setState(AgentState.SICK);
     }
 
     /**
