@@ -3,15 +3,16 @@ package DiseaseSim;
 import java.util.Collection;
 import java.util.concurrent.LinkedBlockingDeque;
 
-public class Agent {
+public class Agent implements Runnable {
     private int xPos, yPos;
     private AgentState state;
     private int id;
     private Collection<Agent> neighbours;
-    private LinkedBlockingDeque<Object> messages; //for the messages
+    private LinkedBlockingDeque<Message> messages; //for the messages
 
     public Agent(int ID) {
-        this.id = id;
+        this.id = ID;
+        messages = new LinkedBlockingDeque<>();
     }
 
     public synchronized void setPos(int xPos, int yPos) {
@@ -39,4 +40,17 @@ public class Agent {
     public synchronized void setNeighbours(Collection<Agent> neighbours) {
         this.neighbours = neighbours;
     }
+
+    @Override
+    public void run() {
+        while(getState() != AgentState.DEAD) {
+
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Agent " + id + " at (" + xPos + "," + yPos + ")";
+    }
+
 }

@@ -5,16 +5,26 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
+/**
+ * Class for holding a collection of Agents, initializing them, computing their
+ * neighbours, starting them on their own threads, and then probably will
+ * communicate with the GUI.
+ */
+
 public class AgentManager {
 
     private ConfigInfo configInfo;
     private ArrayList<Agent> agentList;
 
+    public AgentManager(ConfigInfo configInfo) {
+        this.configInfo = configInfo;
+        agentList = new ArrayList<>();
+    }
 
     /**
      * Initialize Agents w/ positions specified by board type and give agents some kind of state (sick vs. vulnerable)
      */
-    private void initAgents() {
+    public void initAgents() {
         BoardType board = configInfo.boardType;
         int numSick = configInfo.initSick;
         switch (board) {
@@ -67,8 +77,24 @@ public class AgentManager {
         int x_2 = a2.getXPos();
         int y_1 = a1.getYPos();
         int y_2 = a2.getYPos();
-        double x_dist = (x_1-x_2)^2;
-        double y_dist = (y_1-y_2)^2;
+        double x_dist = Math.pow((x_1-x_2), 2);
+        double y_dist = Math.pow((y_1-y_2), 2);
         return (Math.sqrt(x_dist+y_dist)) <= configInfo.exposureDistance;
+    }
+
+    public static void main(String[] args) {
+        ConfigInfo info = new ConfigInfo();
+        info.exposureDistance = 10;
+        info.dimHeight = 50;
+        info.dimWidth = 50;
+        info.boardType = BoardType.RANDOM;
+        info.numAgents = 5;
+        AgentManager manager = new AgentManager(info);
+        manager.initAgents();
+        for(Agent a : manager.agentList) {
+            System.out.println(a);
+            System.out.print("Neighbours: ");
+            System.out.println("");
+        }
     }
 }
