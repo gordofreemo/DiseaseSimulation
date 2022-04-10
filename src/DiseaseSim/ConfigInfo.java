@@ -22,4 +22,10 @@ public class ConfigInfo {
     // The following variables may be optional depending on the board type, only need to set the ones we need
     public int rows, cols; //How many rows/columns we have if we're on a grid
     public int numAgents; //used in randomgrid and random board type
+
+    // The following is the time in ms for each unit of length
+    // For example, if incubation time is 5, then an agent would get sick
+    // after 5*unitTime ms. Can be messed around with for better visualization
+
+    public int unitTime;
 }

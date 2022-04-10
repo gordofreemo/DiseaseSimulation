@@ -18,7 +18,7 @@ public class AgentManager {
 
     public AgentManager(ConfigInfo configInfo) {
         this.configInfo = configInfo;
-        agentList = new ArrayList<>();
+        agentList       = new ArrayList<>();
     }
 
     /**
@@ -26,7 +26,7 @@ public class AgentManager {
      */
     public void initAgents() {
         BoardType board = configInfo.boardType;
-        int numSick = configInfo.initSick;
+        int numSick     = configInfo.initSick;
         switch (board) {
             case RANDOM -> initRandom();
         }
@@ -41,14 +41,14 @@ public class AgentManager {
      * Initialize agents randomly across board
      */
     private void initRandom() {
-        int width = configInfo.dimWidth;
-        int height = configInfo.dimHeight;
+        int width     = configInfo.dimWidth;
+        int height    = configInfo.dimHeight;
         int numAgents = configInfo.numAgents;
 
         for(int i = 0; i < numAgents; i++) {
             int x = (int)(Math.random() * width);
             int y = (int)(Math.random() * height);
-            Agent agent = new Agent(i);
+            Agent agent = new Agent(i, configInfo);
             agent.setPos(x, y);
             agentList.add(i,agent);
         }
@@ -61,8 +61,8 @@ public class AgentManager {
     private void computeNeighbours(Agent a1) {
         Collection<Agent> neighbours =
                 agentList.stream().filter(a2 ->
-                    !(a1.equals(a2)) && exposedClose(a1, a2)
-                ).collect(Collectors.toUnmodifiableList());
+                        !(a1.equals(a2)) && exposedClose(a1, a2)
+                ).toList();
         a1.setNeighbours(neighbours);
     }
 
@@ -83,18 +83,18 @@ public class AgentManager {
     }
 
     public static void main(String[] args) {
-        ConfigInfo info = new ConfigInfo();
+        ConfigInfo info       = new ConfigInfo();
         info.exposureDistance = 10;
-        info.dimHeight = 50;
-        info.dimWidth = 50;
-        info.boardType = BoardType.RANDOM;
-        info.numAgents = 5;
-        AgentManager manager = new AgentManager(info);
+        info.dimHeight        = 50;
+        info.dimWidth         = 50;
+        info.boardType        = BoardType.RANDOM;
+        info.numAgents        = 5;
+        AgentManager manager  = new AgentManager(info);
         manager.initAgents();
         for(Agent a : manager.agentList) {
             System.out.println(a);
             System.out.print("Neighbours: ");
-            System.out.println("");
+            System.out.println();
         }
     }
 }
