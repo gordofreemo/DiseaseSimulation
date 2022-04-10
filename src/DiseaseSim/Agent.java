@@ -54,8 +54,15 @@ public class Agent implements Runnable {
             receiveMessage(messageBuilder.getSick());
         }
 
-        while(getState() != AgentState.DEAD) {
-
+        boolean loop = true;
+        while(loop) {
+            try {
+                messages.takeFirst().doAction(this);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            AgentState state = getState();
+            loop = state != AgentState.DEAD || state != AgentState.IMMUNE;
         }
     }
 
