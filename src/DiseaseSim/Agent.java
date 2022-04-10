@@ -17,6 +17,7 @@ public class Agent implements Runnable {
         this.configInfo = configInfo;
         messages        = new LinkedBlockingDeque<>();
         messageBuilder  = new MessageBuilder();
+        state           = AgentState.VULNERABLE;
     }
 
     public synchronized void setPos(int xPos, int yPos) {
@@ -44,6 +45,10 @@ public class Agent implements Runnable {
 
     public synchronized void setNeighbours(Collection<Agent> neighbours) {
         this.neighbours = neighbours;
+    }
+
+    public Collection<Agent> getNeighbours() {
+        return neighbours;
     }
 
     @Override
@@ -100,6 +105,7 @@ public class Agent implements Runnable {
             return agent -> {
                 Runnable event = () -> {
                   agent.setState(AgentState.SICK);
+                  System.out.println("Agent " + agent.id + " got sick!");
                   int numLoops = configInfo.sickness;
                   int time     = configInfo.unitTime;
                   for(int i = 0; i < numLoops; i++) {
@@ -116,9 +122,13 @@ public class Agent implements Runnable {
         public Message getExposed() {
             return agent -> {
                 AgentState state1 = agent.getState();
-                if(state1 != AgentState.VULNERABLE) return;
+                if(state1 != AgentState.VULNERABLE) {
+                    System.out.println("agent " + agent.id + " got exposed, but is not vulnerable");
+                    return;
+                }
                 agent.setState(AgentState.INCUBATING);
                 Runnable event = () -> {
+                    System.out.println("agent " + agent.id + " is incubating");
                     int incubation = configInfo.incubation;
                     int time       = configInfo.unitTime;
                     try { Thread.sleep(incubation*time); }
@@ -134,6 +144,7 @@ public class Agent implements Runnable {
                 double roll = Math.random();
                 if(roll > configInfo.recover) agent.setState(AgentState.DEAD);
                 else agent.setState(AgentState.IMMUNE);
+                System.out.println("Agent " + agent.id + " is " + agent.getState());
             };
         }
     }

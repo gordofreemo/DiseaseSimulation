@@ -3,7 +3,6 @@ package DiseaseSim;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 /**
  * Class for holding a collection of Agents, initializing them, computing their
@@ -35,6 +34,10 @@ public class AgentManager {
         // Set the randomly sick agents
         Collections.shuffle(agentList); //For randomly assigning the sick
         for(int i = 0; i < numSick; i++) agentList.get(i).setState(AgentState.SICK);
+    }
+
+    public void startAgents() {
+        for(Agent agent : agentList) new Thread(agent).start();
     }
 
     /**
@@ -84,17 +87,25 @@ public class AgentManager {
 
     public static void main(String[] args) {
         ConfigInfo info       = new ConfigInfo();
-        info.exposureDistance = 10;
-        info.dimHeight        = 50;
-        info.dimWidth         = 50;
+        info.recover          = 0.95;
+        info.exposureDistance = 20;
+        info.dimHeight        = 5;
+        info.dimWidth         = 5;
         info.boardType        = BoardType.RANDOM;
-        info.numAgents        = 5;
+        info.numAgents        = 6;
+        info.initSick         = 1;
+        info.unitTime         = 100;
+        info.incubation       = 5;
+        info.sickness         = 5;
+
         AgentManager manager  = new AgentManager(info);
         manager.initAgents();
         for(Agent a : manager.agentList) {
-            System.out.println(a);
+            System.out.println(a + " " + a.getState());
             System.out.print("Neighbours: ");
+            for(Agent b : a.getNeighbours()) System.out.print(" " + b + " ");
             System.out.println();
         }
+        manager.startAgents();
     }
 }
