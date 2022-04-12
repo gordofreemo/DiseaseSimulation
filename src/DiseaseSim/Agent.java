@@ -47,7 +47,7 @@ public class Agent implements Runnable {
         this.neighbours = neighbours;
     }
 
-    public Collection<Agent> getNeighbours() {
+    public synchronized Collection<Agent> getNeighbours() {
         return neighbours;
     }
 
@@ -67,7 +67,7 @@ public class Agent implements Runnable {
                 e.printStackTrace();
             }
             AgentState state = getState();
-            loop = state != AgentState.DEAD || state != AgentState.IMMUNE;
+            loop = state != AgentState.DEAD && state != AgentState.IMMUNE;
         }
     }
 
@@ -78,6 +78,7 @@ public class Agent implements Runnable {
     private void sendMessage(Message message) {
         for(Agent neighbour : neighbours) neighbour.receiveMessage(message);
     }
+
 
     /**
      * Puts a message into the deque of the current agent

@@ -94,7 +94,7 @@ public class AgentManager {
         info.boardType        = BoardType.RANDOM;
         info.numAgents        = 6;
         info.initSick         = 1;
-        info.unitTime         = 100;
+        info.unitTime         = 1000;
         info.incubation       = 5;
         info.sickness         = 5;
 
