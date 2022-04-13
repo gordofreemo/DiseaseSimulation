@@ -84,7 +84,7 @@ public class Agent implements Runnable {
      * Puts a message into the deque of the current agent
      * @param message - message to be handled by the agent in the future
      */
-    private void receiveMessage(Message message) {
+    private synchronized void receiveMessage(Message message) {
         try {
             messages.putLast(message);
         } catch (InterruptedException e) {
