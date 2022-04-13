@@ -85,6 +85,11 @@ public class AgentManager {
         return (Math.sqrt(x_dist+y_dist)) <= configInfo.exposureDistance;
     }
 
+    public Collection<Agent> getAgents() {
+        return agentList;
+    }
+
+
     public static void main(String[] args) {
         ConfigInfo info       = new ConfigInfo();
         info.recover          = 0.95;

@@ -84,7 +84,7 @@ public class Agent implements Runnable {
      * Puts a message into the deque of the current agent
      * @param message - message to be handled by the agent in the future
      */
-    private synchronized void receiveMessage(Message message) {
+    private void receiveMessage(Message message) {
         try {
             messages.putLast(message);
         } catch (InterruptedException e) {
@@ -123,10 +123,8 @@ public class Agent implements Runnable {
         public Message getExposed() {
             return agent -> {
                 AgentState state1 = agent.getState();
-                if(state1 != AgentState.VULNERABLE) {
-                    System.out.println("agent " + agent.id + " got exposed, but is not vulnerable");
-                    return;
-                }
+                if(state1 != AgentState.VULNERABLE) return;
+
                 agent.setState(AgentState.INCUBATING);
                 Runnable event = () -> {
                     System.out.println("agent " + agent.id + " is incubating");

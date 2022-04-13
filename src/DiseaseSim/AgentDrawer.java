@@ -14,13 +14,17 @@ import java.util.Collection;
 public class AgentDrawer {
     private Collection<AgentToGUI> agentsGUI;
     private double size; //size of radius of circle representing agent (in px)
-
-    AgentDrawer(double size) {
+    private int width;
+    private int height;
+    AgentDrawer(int width, int height, double size) {
+        this.width = width;
+        this.height = height;
         this.size = size;
     }
 
     public void draw(GraphicsContext g, Collection<Agent> agents) {
         mapAgents(agents);
+        g.clearRect(0,0,width,height);
         for(AgentToGUI agent : agentsGUI) {
             g.setFill(agent.color);
             g.fillOval(agent.xPos-size,agent.yPos-size,size,size);
