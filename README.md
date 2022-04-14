@@ -6,6 +6,7 @@ DONE:
 - Made AgentManager class to handle initialization of Agents
 - Agents appear to function, message sending/disease spreading works fine
 - Made AgentDrawer class to draw agents on some screen
+- Started a bit of the display
 
 TO DO: 
 

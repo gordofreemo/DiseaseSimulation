@@ -16,6 +16,9 @@ public class AgentDrawer {
     private double size; //size of radius of circle representing agent (in px)
     private int width;
     private int height;
+
+    // Note - recommend making the canvas larger than the width/height...
+    // that way stuff doesn't get drawn off the screen
     AgentDrawer(int width, int height, double size) {
         this.width = width;
         this.height = height;
@@ -27,7 +30,7 @@ public class AgentDrawer {
         g.clearRect(0,0,width,height);
         for(AgentToGUI agent : agentsGUI) {
             g.setFill(agent.color);
-            g.fillOval(agent.xPos-size,agent.yPos-size,size,size);
+            g.fillOval(agent.xPos,agent.yPos,size,size);
         }
     }
 
@@ -40,7 +43,7 @@ public class AgentDrawer {
         switch(agent.getState()) {
             case IMMUNE -> color = Color.LIGHTBLUE;
             case DEAD   -> color = Color.BLACK;
-            case SICK   -> color = Color.GREEN;
+            case SICK   -> color = Color.RED;
             default     -> color = Color.DARKBLUE;
         }
 

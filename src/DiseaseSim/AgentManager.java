@@ -1,8 +1,6 @@
 package DiseaseSim;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 /**
  * Class for holding a collection of Agents, initializing them, computing their
@@ -28,6 +26,8 @@ public class AgentManager {
         int numSick     = configInfo.initSick;
         switch (board) {
             case RANDOM -> initRandom();
+            case GRID   -> initGrid();
+            case RANDOM_GRID -> initRandomGrid();
         }
         for(Agent agent : agentList) computeNeighbours(agent);
 
@@ -54,6 +54,46 @@ public class AgentManager {
             Agent agent = new Agent(i, configInfo);
             agent.setPos(x, y);
             agentList.add(i,agent);
+        }
+    }
+
+    /**
+     * Initialize agents on a grid
+     */
+    private void initGrid() {
+        int r = configInfo.rows;
+        int c = configInfo.cols;
+        int dis = configInfo.exposureDistance;
+        int id = 0;
+        for(int i = 0; i < r; i++) {
+            for(int j = 0; j < c; j++) {
+                Agent agent = new Agent(id, configInfo);
+                agent.setPos(j*dis, i*dis);
+                agentList.add(i,agent);
+                id++;
+            }
+        }
+    }
+
+    private void initRandomGrid() {
+        int r = configInfo.rows;
+        int c = configInfo.cols;
+        int dist = configInfo.exposureDistance;
+        ArrayList<Tuple<Integer, Integer>> coordinates = new ArrayList<>();
+
+        for(int i = 0; i < r; i++) {
+            for(int j = 0; j < c; j++) {
+                coordinates.add(new Tuple<>(i*dist,j*dist));
+            }
+        }
+        Collections.shuffle(coordinates);
+        int id = 0;
+        for(int i = 0; i < configInfo.numAgents; i++) {
+            Tuple<Integer, Integer> cord = coordinates.remove(0);
+            Agent agent = new Agent(id, configInfo);
+            agent.setPos(cord.x, cord.y);
+            agentList.add(i,agent);
+            id++;
         }
     }
 

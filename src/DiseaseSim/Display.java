@@ -25,18 +25,20 @@ public class Display extends Application {
 
         ConfigInfo info = new ConfigInfo();
         info.recover = 0.95;
-        info.exposureDistance = 20;
-        info.dimHeight = 500;
-        info.dimWidth = 500;
-        info.boardType = BoardType.RANDOM;
-        info.numAgents = 100;
-        info.initSick = 50;
+        info.exposureDistance = 30;
+        info.dimHeight = 300;
+        info.dimWidth = 300;
+        info.boardType = BoardType.RANDOM_GRID;
+        info.numAgents = 50;
+        info.rows = 10;
+        info.cols = 10;
+        info.initSick = 5;
         info.unitTime = 200;
         info.incubation = 5;
         info.sickness = 5;
 
         AgentManager manager = new AgentManager(info);
-        AgentDrawer drawer = new AgentDrawer(500,500,10);
+        AgentDrawer drawer = new AgentDrawer(500,500,15);
         manager.initAgents();
         primaryStage.setScene(scene);
 
@@ -47,7 +49,7 @@ public class Display extends Application {
             }
         };
 
-        new Timer().scheduleAtFixedRate(redraw, 0, 5);
+        new Timer().scheduleAtFixedRate(redraw, 0, info.unitTime/2);
         manager.startAgents();
         primaryStage.show();
     }
