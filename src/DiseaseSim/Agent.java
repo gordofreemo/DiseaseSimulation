@@ -11,6 +11,7 @@ public class Agent implements Runnable {
     private int id;
     private Collection<Agent> neighbours;
     private LinkedBlockingDeque<Message> messages; //for the messages
+    private boolean interrupt;
 
     public Agent(int ID, ConfigInfo configInfo) {
         this.id         = ID;
@@ -18,6 +19,12 @@ public class Agent implements Runnable {
         messages        = new LinkedBlockingDeque<>();
         messageBuilder  = new MessageBuilder();
         state           = AgentState.VULNERABLE;
+        interrupt = false;
+    }
+
+    // doesn't work currently
+    public void softCloseThread() {
+        interrupt = true;
     }
 
     public synchronized void setPos(int xPos, int yPos) {
@@ -67,7 +74,7 @@ public class Agent implements Runnable {
                 e.printStackTrace();
             }
             AgentState state = getState();
-            loop = state != AgentState.DEAD && state != AgentState.IMMUNE;
+            loop = !interrupt && state != AgentState.DEAD && state != AgentState.IMMUNE;
         }
     }
 

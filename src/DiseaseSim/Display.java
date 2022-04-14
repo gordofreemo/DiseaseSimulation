@@ -15,7 +15,7 @@ public class Display extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         VBox box = new VBox();
         Scene scene = new Scene(box);
         Canvas canvas = new Canvas();
@@ -52,5 +52,8 @@ public class Display extends Application {
         new Timer().scheduleAtFixedRate(redraw, 0, info.unitTime/2);
         manager.startAgents();
         primaryStage.show();
+        primaryStage.setOnCloseRequest(event -> {
+            manager.stopAgents();
+        });
     }
 }

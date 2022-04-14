@@ -10,8 +10,8 @@ DONE:
 
 TO DO: 
 
-- Make the other board configurations work in the AgentManager class
 - Add the extra requirements such as log, graph, initial immunity, etc. 
 - Add comments to various things 
 - Make PDF design diagram 
+- Make the program actually stop when you close the GUI 
 - Update the ReadMe with a more standardized project description

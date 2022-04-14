@@ -40,6 +40,11 @@ public class AgentManager {
         for(Agent agent : agentList) new Thread(agent).start();
     }
 
+    // Doesn't work currently
+    public void stopAgents() {
+        for(Agent agent : agentList) agent.softCloseThread();
+    }
+
     /**
      * Initialize agents randomly across board
      */
