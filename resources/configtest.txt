@@ -1,0 +1,5 @@
+exposuredistance 30
+dimensions 400 300
+incubation 3
+grid 6 5
+recover 0.85
