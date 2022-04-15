@@ -2,21 +2,28 @@ package DiseaseSim;
 
 import javafx.scene.control.TextArea;
 
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.LinkedBlockingDeque;
+
 public class LoggerDisplay extends TextArea {
-    private boolean state; // If true, actually appends to display
+    private BlockingDeque<String> output;
 
     public LoggerDisplay() {
         super();
-        this.setEditable(false);
-        state = false;
+        output = new LinkedBlockingDeque<>();
+        setPrefSize(500,500);
     }
 
-    public void holdState(boolean state) {
-        this.state = state;
+    public void updateScreen() {
+        if(!output.isEmpty()) appendText(output.pop() + '\n');
     }
+
     public void receiveUpdate(String update) {
-        System.out.println(update);
-        if(state) this.appendText(update);
+        try {
+            output.putFirst(update);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

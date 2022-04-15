@@ -16,6 +16,7 @@ public class AgentDrawer {
     private double size; //size of radius of circle representing agent (in px)
     private int width;
     private int height;
+    private int offset;
 
     // Note - recommend making the canvas larger than the width/height...
     // that way stuff doesn't get drawn off the screen
@@ -23,6 +24,11 @@ public class AgentDrawer {
         this.width = width;
         this.height = height;
         this.size = size;
+        offset = 0;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 
     public void draw(GraphicsContext g, Collection<Agent> agents) {
@@ -30,7 +36,7 @@ public class AgentDrawer {
         g.clearRect(0,0,width,height);
         for(AgentToGUI agent : agentsGUI) {
             g.setFill(agent.color);
-            g.fillOval(agent.xPos,agent.yPos,size,size);
+            g.fillOval(agent.xPos+offset,agent.yPos+offset,size,size);
         }
     }
 

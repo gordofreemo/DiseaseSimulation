@@ -1,0 +1,6 @@
+random 50
+exposure 40
+incubation 5
+sickness 10
+unittime 100
+dimensions 100 100
