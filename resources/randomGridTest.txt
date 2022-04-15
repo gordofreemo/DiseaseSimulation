@@ -1,0 +1,9 @@
+randomgrid 50 50 2000
+recover 0.9
+sickness 13
+initialsick 100
+initialimmune 50
+incubation 19
+exposuredistance 15
+unittime 100
+dimensions 700 700

@@ -53,7 +53,7 @@ public class FileParser {
                 case "recover"  -> info.recover = Double.parseDouble(parts[1]);
                 case "initialsick" -> info.initSick = Integer.parseInt(parts[1]);
                 case "initialimmune" -> info.initImmune = Integer.parseInt(parts[1]);
-                case "unitTime" -> info.unitTime = Integer.parseInt(parts[1]);
+                case "unittime" -> info.unitTime = Integer.parseInt(parts[1]);
                 case "grid" -> {
                     info.boardType = BoardType.GRID;
                     info.rows = Integer.parseInt(parts[1]);
@@ -67,6 +67,7 @@ public class FileParser {
                     info.boardType = BoardType.RANDOM_GRID;
                     info.rows = Integer.parseInt(parts[1]);
                     info.cols = Integer.parseInt(parts[2]);
+                    info.numAgents = Integer.parseInt(parts[3]);
                 }
             }
         }

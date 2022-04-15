@@ -1,0 +1,9 @@
+recover 0.50
+exposuredistance 20
+dimensions 900 900
+incubation 7
+sickess 13
+initialsick 100
+initialimmune 50
+random 5000
+unittime 200

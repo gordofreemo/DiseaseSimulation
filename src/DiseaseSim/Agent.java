@@ -11,6 +11,7 @@ public class Agent implements Runnable {
     private int id;
     private Collection<Agent> neighbours;
     private LinkedBlockingDeque<Message> messages; //for the messages
+    private LoggerDisplay logger;
 
     public Agent(int ID, ConfigInfo configInfo) {
         this.id         = ID;
@@ -18,6 +19,7 @@ public class Agent implements Runnable {
         messages        = new LinkedBlockingDeque<>();
         messageBuilder  = new MessageBuilder();
         state           = AgentState.VULNERABLE;
+        logger          = new LoggerDisplay(); // Dummy logger if not set
     }
 
     public synchronized void setPos(int xPos, int yPos) {
@@ -51,12 +53,15 @@ public class Agent implements Runnable {
         return neighbours;
     }
 
+    public void setLogger(LoggerDisplay logger) {
+        this.logger = logger;
+    }
     @Override
     public void run() {
         // If initialized as sick, start the thread to send out "get sick"
         // messages to neighbours, need to make incubation thread
         if(getState() == AgentState.SICK) {
-            receiveMessage(messageBuilder.getSick());
+            receiveMessage(messageBuilder.getSick(this.id));
         }
 
         boolean loop = true;
@@ -102,15 +107,15 @@ public class Agent implements Runnable {
      * Stateless class (Thread Safe with no Synchronization)
      */
     private class MessageBuilder {
-        public Message getSick() {
+        public Message getSick(int callerID) {
             return agent -> {
                 Runnable event = () -> {
                   agent.setState(AgentState.SICK);
-                  System.out.println("Agent " + agent.id + " got sick!");
+                  logger.receiveUpdate("Agent " + agent.id + " got sick!");
                   int numLoops = configInfo.sickness;
                   int time     = configInfo.unitTime;
                   for(int i = 0; i < numLoops; i++) {
-                      agent.sendMessage(getExposed());
+                      agent.sendMessage(getExposed(callerID));
                       try { Thread.sleep(time); }
                       catch (InterruptedException e) { e.printStackTrace(); }
                   }
@@ -120,19 +125,20 @@ public class Agent implements Runnable {
             };
         }
 
-        public Message getExposed() {
+        public Message getExposed(int callerID) {
             return agent -> {
                 AgentState state1 = agent.getState();
                 if(state1 != AgentState.VULNERABLE) return;
 
                 agent.setState(AgentState.INCUBATING);
                 Runnable event = () -> {
-                    System.out.println("agent " + agent.id + " is incubating");
+                    String log = "Agent "+callerID+" exposed "+" Agent "+agent.id;
+                    logger.receiveUpdate(log);
                     int incubation = configInfo.incubation;
                     int time       = configInfo.unitTime;
                     try { Thread.sleep(incubation*time); }
                     catch (InterruptedException e) { e.printStackTrace(); }
-                    agent.receiveMessage(getSick());
+                    agent.receiveMessage(getSick(callerID));
                 };
                 new Thread(event).start();
             };
@@ -143,7 +149,7 @@ public class Agent implements Runnable {
                 double roll = Math.random();
                 if(roll > configInfo.recover) agent.setState(AgentState.DEAD);
                 else agent.setState(AgentState.IMMUNE);
-                System.out.println("Agent " + agent.id + " is " + agent.getState());
+                logger.receiveUpdate("Agent " + agent.id + " is " + agent.getState());
             };
         }
     }

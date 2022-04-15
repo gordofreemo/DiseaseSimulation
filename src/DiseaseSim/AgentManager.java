@@ -40,6 +40,10 @@ public class AgentManager {
         }
     }
 
+    public void addLogger(LoggerDisplay logger) {
+        for(Agent agent : agentList) agent.setLogger(logger);
+    }
+
     public void startAgents() {
         for(Agent agent : agentList) new Thread(agent).start();
     }

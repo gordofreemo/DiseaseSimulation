@@ -5,6 +5,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.TimerTask;
 import java.util.Timer;
 
@@ -16,30 +19,33 @@ public class Display extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        List<String> args = getParameters().getRaw();
+        String filename = "resources/grid.txt";
+        if(args.size() != 0) filename = args.get(0);
+        FileParser parser;
+        ConfigInfo info = new ConfigInfo();
+        LoggerDisplay logger = new LoggerDisplay();
+        try {
+            if(filename != "") {
+                parser = new FileParser(filename);
+                parser.parseFile();
+                info = parser.getInfo();
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("FILE NOT FOUND / FAILED TO OPEN. EXITING");
+            System.exit(1);
+        }
+
         VBox box = new VBox();
         Scene scene = new Scene(box);
         Canvas canvas = new Canvas();
-        canvas.setHeight(900);
-        canvas.setWidth(900);
+        canvas.setHeight(info.dimHeight);
+        canvas.setWidth(info.dimWidth);
         box.getChildren().add(canvas);
 
-        ConfigInfo info = new ConfigInfo();
-        info.recover = 0.95;
-        info.exposureDistance = 20;
-        info.dimHeight = 900;
-        info.dimWidth = 900;
-        info.boardType = BoardType.RANDOM;
-        info.numAgents = 1000;
-        info.rows = 10;
-        info.cols = 10;
-        info.initSick = 100;
-        info.initImmune = 100;
-        info.unitTime = 200;
-        info.incubation = 5;
-        info.sickness = 5;
-
         AgentManager manager = new AgentManager(info);
-        AgentDrawer drawer = new AgentDrawer(900,900,10);
+        manager.addLogger(logger);
+        AgentDrawer drawer = new AgentDrawer(info.dimWidth,info.dimHeight,10);
         manager.initAgents();
         primaryStage.setScene(scene);
 
@@ -50,7 +56,7 @@ public class Display extends Application {
             }
         };
 
-        new Timer().scheduleAtFixedRate(redraw, 0, info.unitTime/2);
+        new Timer().scheduleAtFixedRate(redraw, 0, info.unitTime/3);
         manager.startAgents();
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> {
