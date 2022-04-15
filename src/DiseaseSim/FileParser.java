@@ -71,4 +71,11 @@ public class FileParser {
     public ConfigInfo getInfo() {
         return info;
     }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        String filename = "configtest.txt";
+        FileParser parser = new FileParser(filename);
+        parser.parseFile();
+        System.out.println(parser.getInfo());
+    }
 }

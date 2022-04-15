@@ -28,4 +28,18 @@ public class ConfigInfo {
     // after 5*unitTime ms. Can be messed around with for better visualization
 
     public int unitTime;
+
+    @Override
+    public String toString() {
+        String l1 = "width: " + dimWidth + ", height: " + dimHeight + '\n';
+        String l2 = "exposure distance: " + exposureDistance + '\n';
+        String l3 = "incubation time: " + incubation + '\n';
+        String l4 = "sickness time: " + sickness + '\n';
+        String l5 = "recover time: " + recover + '\n';
+        String l6 = "initial sick: " + initSick + '\n';
+        String l7 = "board type: " + boardType + '\n';
+        String l8 = "rows: " + rows + ", columns: " + cols + '\n';
+        String l9 = "numAgents: " + numAgents;
+        return l1 + l2 + l3 + l4 + l5 + l6 + l7 + l8 + l9;
+    }
 }
