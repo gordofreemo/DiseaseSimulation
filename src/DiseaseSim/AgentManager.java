@@ -24,6 +24,7 @@ public class AgentManager {
     public void initAgents() {
         BoardType board = configInfo.boardType;
         int numSick     = configInfo.initSick;
+        int numImmune   = configInfo.initImmune;
         switch (board) {
             case RANDOM -> initRandom();
             case GRID   -> initGrid();
@@ -31,18 +32,16 @@ public class AgentManager {
         }
         for(Agent agent : agentList) computeNeighbours(agent);
 
-        // Set the randomly sick agents
-        Collections.shuffle(agentList); //For randomly assigning the sick
+        // Set the randomly sick/immune agents
+        Collections.shuffle(agentList); //For randomly assigning states
         for(int i = 0; i < numSick; i++) agentList.get(i).setState(AgentState.SICK);
+        for(int i = numSick; i < numSick + numImmune; i++) {
+            agentList.get(i).setState(AgentState.IMMUNE);
+        }
     }
 
     public void startAgents() {
         for(Agent agent : agentList) new Thread(agent).start();
-    }
-
-    // Doesn't work currently
-    public void stopAgents() {
-        for(Agent agent : agentList) agent.softCloseThread();
     }
 
     /**

@@ -17,6 +17,7 @@ public class ConfigInfo {
     public int sickness; //Time the agent is sick
     public double recover; //Chance for agent to recover :: (1-recover) = chance to die
     public int initSick; //How many agents are sick from the start?
+    public int initImmune; //How many agents are immune from the start?
     public BoardType boardType; //Type of board we have
 
     // The following variables may be optional depending on the board type, only need to set the ones we need

@@ -1,63 +1,60 @@
-package disease;
+package DiseaseSim;
 
-import java.util.concurrent.LinkedBlockingDeque;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import java.util.TimerTask;
+import java.util.Timer;
 
-import DiseaseSim.Agent;
-import DiseaseSim.AgentState;
-import DiseaseSim.Message;
-import DiseaseSim.MessageAction;
+public class Display extends Application {
 
-public class AgentDisplay implements Runnable {
-	LinkedBlockingDeque<Message> linkque;
+    public static void main(String[] args) {
+        launch(args);
+    }
 
-	public AgentDisplay(LinkedBlockingDeque<Message> linkque) {
-		this.linkque = linkque;
-	}
+    @Override
+    public void start(Stage primaryStage) {
+        VBox box = new VBox();
+        Scene scene = new Scene(box);
+        Canvas canvas = new Canvas();
+        canvas.setHeight(900);
+        canvas.setWidth(900);
+        box.getChildren().add(canvas);
 
-	@Override
-	public  synchronized void run() {
-		try {
-			 while(true) {
-				if (linkque.size() <= 0) {
-					return;
-				}
-				System.out.println("agentdisplay linkquesize:"+linkque.size());
-				
-				MessageAction a = (MessageAction) linkque.take();
-				System.out.println("agentdisplay linkquesize:"+linkque.size());
-				
-				Agent b = a.getAgent();
-				//a.doAction(b);
-				AgentNodeView cnv = new AgentNodeView();
-				cnv.setID(b.getXPos() + "," + b.getYPos()+":"+b.getState());
-				cnv.showIcon();
-				
-				if (b.getState() == AgentState.DEAD) {
-					cnv.setBackgroundColor(5); // grey
-				}
-				if (b.getState() == AgentState.IMMUNE) {
-					cnv.setBackgroundColor(4); // green
-				}
-				if (b.getState() == AgentState.INCUBATING) {
-					cnv.setBackgroundColor(0); // red
-				}
-				if (b.getState() == AgentState.SICK) {
-					cnv.setBackgroundColor(1); // orange
-				}
-				if (b.getState() == AgentState.VULNERABLE) {
-					cnv.setBackgroundColor(2); // yellow
-				}
-		
-				MainProgram.cv.addColonyNodeView(cnv, b.getXPos(), b.getYPos());
-				System.out.println("x:" + b.getXPos() + ",y:" + b.getYPos());
-			
-				MainProgram.cv.repaint();
-			//	b.run();
-				Thread.sleep(2000);
-			 }
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+        ConfigInfo info = new ConfigInfo();
+        info.recover = 0.95;
+        info.exposureDistance = 20;
+        info.dimHeight = 900;
+        info.dimWidth = 900;
+        info.boardType = BoardType.RANDOM;
+        info.numAgents = 1000;
+        info.rows = 10;
+        info.cols = 10;
+        info.initSick = 100;
+        info.initImmune = 100;
+        info.unitTime = 200;
+        info.incubation = 5;
+        info.sickness = 5;
 
+        AgentManager manager = new AgentManager(info);
+        AgentDrawer drawer = new AgentDrawer(900,900,10);
+        manager.initAgents();
+        primaryStage.setScene(scene);
+
+        TimerTask redraw = new TimerTask() {
+            @Override
+            public void run() {
+                drawer.draw(canvas.getGraphicsContext2D(), manager.getAgents());
+            }
+        };
+
+        new Timer().scheduleAtFixedRate(redraw, 0, info.unitTime/2);
+        manager.startAgents();
+        primaryStage.show();
+        primaryStage.setOnCloseRequest(event -> {
+            System.exit(0);
+        });
+    }
 }

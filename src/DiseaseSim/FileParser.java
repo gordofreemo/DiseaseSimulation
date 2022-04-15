@@ -32,6 +32,8 @@ public class FileParser {
         info.boardType        = BoardType.RANDOM;
         info.numAgents        = 100;
         info.initSick         = 1;
+        info.initImmune       = 0;
+        info.unitTime         = 200;
     }
 
     public void parseFile() {
@@ -50,6 +52,8 @@ public class FileParser {
                 case "sickness" -> info.sickness = Integer.parseInt(parts[1]);
                 case "recover"  -> info.recover = Double.parseDouble(parts[1]);
                 case "initialsick" -> info.initSick = Integer.parseInt(parts[1]);
+                case "initialimmune" -> info.initImmune = Integer.parseInt(parts[1]);
+                case "unitTime" -> info.unitTime = Integer.parseInt(parts[1]);
                 case "grid" -> {
                     info.boardType = BoardType.GRID;
                     info.rows = Integer.parseInt(parts[1]);
