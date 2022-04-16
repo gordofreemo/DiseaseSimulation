@@ -21,7 +21,7 @@ public class Display extends Application {
     @Override
     public void start(Stage primaryStage) {
         List<String> args = getParameters().getRaw();
-        String filename = "resources/manyAgents.txt";
+        String filename = "resources/randomGridTest.txt";
         if(args.size() != 0) filename = args.get(0);
         FileParser parser;
         ConfigInfo info = new ConfigInfo();
@@ -68,8 +68,8 @@ public class Display extends Application {
             }
         };
 
-        new Timer().scheduleAtFixedRate(redrawCanvas, 0, info.unitTime/3);
-        new Timer().scheduleAtFixedRate(redrawLog, 100, 10);
+        new Timer().scheduleAtFixedRate(redrawCanvas, 0, info.unitTime/2);
+        new Timer().scheduleAtFixedRate(redrawLog, 0, 10);
         primaryStage.show();
         newStage.show();
         primaryStage.setOnCloseRequest(event -> {

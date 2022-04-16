@@ -36,7 +36,7 @@ public class AgentDrawer {
         g.clearRect(0,0,width,height);
         for(AgentToGUI agent : agentsGUI) {
             g.setFill(agent.color);
-            g.fillOval(agent.xPos+offset,agent.yPos+offset,size,size);
+            g.fillOval(agent.xPos+offset/2,agent.yPos+offset/2,size,size);
         }
     }
 

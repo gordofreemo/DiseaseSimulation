@@ -132,8 +132,6 @@ public class Agent implements Runnable {
 
                 agent.setState(AgentState.INCUBATING);
                 Runnable event = () -> {
-                    String log = "Agent "+callerID+" exposed "+" Agent "+agent.id;
-                    logger.receiveUpdate(log);
                     int incubation = configInfo.incubation;
                     int time       = configInfo.unitTime;
                     try { Thread.sleep(incubation*time); }
