@@ -7,7 +7,7 @@ package DiseaseSim;
  */
 
 @FunctionalInterface
-
 public interface Message {
+	
     void doAction(Agent agent);
 }
