@@ -19,21 +19,6 @@ public class FileParser {
         FileReader file = new FileReader(fileName);
         sc = new Scanner(file);
         info = new ConfigInfo();
-        defaultInfo();
-    }
-
-    private void defaultInfo() {
-        info.dimWidth         = 200;
-        info.dimHeight        = 200;
-        info.exposureDistance = 20;
-        info.incubation       = 5;
-        info.sickness         = 10;
-        info.recover          = 0.95;
-        info.boardType        = BoardType.RANDOM;
-        info.numAgents        = 100;
-        info.initSick         = 1;
-        info.initImmune       = 0;
-        info.unitTime         = 200;
     }
 
     public void parseFile() {
@@ -54,6 +39,10 @@ public class FileParser {
                 case "initialsick" -> info.initSick = Integer.parseInt(parts[1]);
                 case "initialimmune" -> info.initImmune = Integer.parseInt(parts[1]);
                 case "unittime" -> info.unitTime = Integer.parseInt(parts[1]);
+                case "logenabled" -> {
+                    if(parts[1].charAt(0) == 't') info.logEnabled = true;
+                    else info.logEnabled = false;
+                }
                 case "grid" -> {
                     info.boardType = BoardType.GRID;
                     info.rows = Integer.parseInt(parts[1]);

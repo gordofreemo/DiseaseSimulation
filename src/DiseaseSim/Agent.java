@@ -19,7 +19,6 @@ public class Agent implements Runnable {
         messages        = new LinkedBlockingDeque<>();
         messageBuilder  = new MessageBuilder();
         state           = AgentState.VULNERABLE;
-        logger          = new LoggerDisplay(); // Dummy logger if not set
     }
 
     public synchronized void setPos(int xPos, int yPos) {
@@ -43,7 +42,6 @@ public class Agent implements Runnable {
     public synchronized AgentState getState() {
         return state;
     }
-
 
     public synchronized void setNeighbours(Collection<Agent> neighbours) {
         this.neighbours = neighbours;
@@ -97,6 +95,10 @@ public class Agent implements Runnable {
         }
     }
 
+    private void logMessage(String message) {
+        if(logger != null) logger.receiveUpdate(message);
+    }
+
     @Override
     public String toString() {
         return "Agent " + id + " at (" + xPos + "," + yPos + ")";
@@ -111,7 +113,7 @@ public class Agent implements Runnable {
             return agent -> {
                 Runnable event = () -> {
                   agent.setState(AgentState.SICK);
-                  logger.receiveUpdate("Agent " + agent.id + " got sick!");
+                  logMessage("Agent " + agent.id + " got sick!");
                   int numLoops = configInfo.sickness;
                   int time     = configInfo.unitTime;
                   for(int i = 0; i < numLoops; i++) {
@@ -147,7 +149,7 @@ public class Agent implements Runnable {
                 double roll = Math.random();
                 if(roll > configInfo.recover) agent.setState(AgentState.DEAD);
                 else agent.setState(AgentState.IMMUNE);
-                logger.receiveUpdate("Agent " + agent.id + " is " + agent.getState());
+                logMessage("Agent " + agent.id + " is " + agent.getState());
             };
         }
     }
