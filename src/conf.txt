@@ -1,6 +1,0 @@
-exposureDistance = 10
-dimHeight = 100
-dimWidth = 100
-boardType = 2
-numAgents = 50
-initSick = 1
