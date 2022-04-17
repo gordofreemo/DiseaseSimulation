@@ -1,0 +1,7 @@
+random 10
+exposure 40
+incubation 5
+sickness 10
+unittime 100
+initialimmune 4
+dimensions 50 50

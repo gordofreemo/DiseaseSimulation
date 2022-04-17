@@ -11,6 +11,21 @@ package DiseaseSim;
 
 public class ConfigInfo {
 
+    public ConfigInfo() {
+        dimWidth         = 200;
+        dimHeight        = 200;
+        exposureDistance = 20;
+        incubation       = 5;
+        sickness         = 10;
+        recover          = 0.95;
+        boardType        = BoardType.RANDOM;
+        numAgents        = 100;
+        initSick         = 1;
+        initImmune       = 0;
+        unitTime         = 150;
+        logEnabled       = true;
+    }
+
     public int dimWidth, dimHeight; //Dimensions of board
     public int exposureDistance;
     public int incubation; //Time it takes until sick
@@ -27,8 +42,9 @@ public class ConfigInfo {
     // The following is the time in ms for each unit of length
     // For example, if incubation time is 5, then an agent would get sick
     // after 5*unitTime ms. Can be messed around with for better visualization
-
     public int unitTime;
+    // true -> logger enabled, false -> logger disabled
+    public boolean logEnabled;
 
     @Override
     public String toString() {

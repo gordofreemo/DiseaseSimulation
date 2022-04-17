@@ -40,10 +40,18 @@ public class AgentManager {
         }
     }
 
+    /**
+     * Add the logging object to each of the agents, so they can communicate
+     * with it.
+     * @param logger - logging object to give to the Agents
+     */
     public void addLogger(LoggerDisplay logger) {
         for(Agent agent : agentList) agent.setLogger(logger);
     }
 
+    /**
+     * Begin running all the Agents on their own threads
+     */
     public void startAgents() {
         for(Agent agent : agentList) new Thread(agent).start();
     }
@@ -83,6 +91,9 @@ public class AgentManager {
         }
     }
 
+    /**
+     * Initialize agents on a random grid
+     */
     private void initRandomGrid() {
         int r = configInfo.rows;
         int c = configInfo.cols;
@@ -133,32 +144,10 @@ public class AgentManager {
         return (Math.sqrt(x_dist+y_dist)) <= configInfo.exposureDistance;
     }
 
+    /**
+     * @return - Collection of agents that the AgentManager is holding
+     */
     public Collection<Agent> getAgents() {
         return agentList;
-    }
-
-
-    public static void main(String[] args) {
-        ConfigInfo info       = new ConfigInfo();
-        info.recover          = 0.95;
-        info.exposureDistance = 20;
-        info.dimHeight        = 5;
-        info.dimWidth         = 5;
-        info.boardType        = BoardType.RANDOM;
-        info.numAgents        = 6;
-        info.initSick         = 1;
-        info.unitTime         = 1000;
-        info.incubation       = 5;
-        info.sickness         = 5;
-
-        AgentManager manager  = new AgentManager(info);
-        manager.initAgents();
-        for(Agent a : manager.agentList) {
-            System.out.println(a + " " + a.getState());
-            System.out.print("Neighbours: ");
-            for(Agent b : a.getNeighbours()) System.out.print(" " + b + " ");
-            System.out.println();
-        }
-        manager.startAgents();
     }
 }
