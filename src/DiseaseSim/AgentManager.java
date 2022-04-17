@@ -40,10 +40,18 @@ public class AgentManager {
         }
     }
 
+    /**
+     * Add the logging object to each of the agents, so they can communicate
+     * with it.
+     * @param logger - logging object to give to the Agents
+     */
     public void addLogger(LoggerDisplay logger) {
         for(Agent agent : agentList) agent.setLogger(logger);
     }
 
+    /**
+     * Begin running all the Agents on their own threads
+     */
     public void startAgents() {
         for(Agent agent : agentList) new Thread(agent).start();
     }
@@ -83,6 +91,9 @@ public class AgentManager {
         }
     }
 
+    /**
+     * Initialize agents on a random grid
+     */
     private void initRandomGrid() {
         int r = configInfo.rows;
         int c = configInfo.cols;
@@ -133,6 +144,9 @@ public class AgentManager {
         return (Math.sqrt(x_dist+y_dist)) <= configInfo.exposureDistance;
     }
 
+    /**
+     * @return - Collection of agents that the AgentManager is holding
+     */
     public Collection<Agent> getAgents() {
         return agentList;
     }
