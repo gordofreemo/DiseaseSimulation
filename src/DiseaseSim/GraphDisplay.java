@@ -6,6 +6,12 @@ import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
 
+/**
+ * Class for drawing the graph that visualizes how many agents have what
+ * kind of state at a given time. Uses the logger object to get the information
+ * for drawing.
+ */
+
 public class GraphDisplay extends Canvas {
     private LinkedList<Integer> sickPoints;
     private LinkedList<Integer> vulnerablePoints;
@@ -47,6 +53,9 @@ public class GraphDisplay extends Canvas {
         totalAgents = numSick + numVulnerable + numDead + numImmune;
     }
 
+    /**
+     * Repaint the graph display
+     */
     public void repaint() {
         unitsElapsed++;
         getGraphicsContext2D().clearRect(0,0,width,height);
@@ -61,6 +70,13 @@ public class GraphDisplay extends Canvas {
         drawLine(immunePoints, AgentState.IMMUNE);
     }
 
+    /**
+     * Draw the line for a certain set of points representing a given state
+     * @param points - points representing time and number of agents with
+     *               given state
+     * @param state - the state to draw the line for, changes the color
+     *              that is used to draw the line
+     */
     private void drawLine(LinkedList<Integer> points, AgentState state) {
         GraphicsContext g = this.getGraphicsContext2D();
         switch(state) {
@@ -86,6 +102,9 @@ public class GraphDisplay extends Canvas {
         }
     }
 
+    /**
+     * Draws the coordinate axes / tick marks on the graph
+     */
     private void drawOuterPart() {
         GraphicsContext g = this.getGraphicsContext2D();
         g.setStroke(Color.BLACK);
@@ -104,21 +123,33 @@ public class GraphDisplay extends Canvas {
         }
     }
 
+    /**
+     * Add a new point to the points representing number of sick agents
+     */
     private void updateSick() {
         if(sickPoints.size() == 10) sickPoints.pop();
         sickPoints.addLast(logger.getLogSick());
     }
 
+    /**
+     * Add a new point to the points representing number of sick agents
+     */
     private void updateVulnerable() {
         if(vulnerablePoints.size() == 10) vulnerablePoints.pop();
         vulnerablePoints.addLast(logger.getNumVulnerable());
     }
 
+    /**
+     * Adds a new point to the points representing number of sick agents
+     */
     private void updateImmune() {
         if(immunePoints.size() == 10) immunePoints.pop();
         immunePoints.addLast(logger.getLogImmune());
     }
 
+    /**
+     * Adds a new point to the points representing number of dead agents
+     */
     private void updateDead() {
         if(deadPoints.size() == 10) deadPoints.pop();
         deadPoints.addLast(logger.getLogDead());
