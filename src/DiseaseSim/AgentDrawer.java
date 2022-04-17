@@ -27,10 +27,18 @@ public class AgentDrawer extends Canvas {
         offset = 0;
     }
 
+    /**
+     * @param offset - sets how far from the top left corner of the canvas
+     *               this class should draw Agents
+     */
     public void setOffset(int offset) {
         this.offset = offset;
     }
 
+    /**
+     * Repaint the given collection of agents onto the screen
+     * @param agents - agents to draw onto the screen
+     */
     public void draw(Collection<Agent> agents) {
         GraphicsContext g = this.getGraphicsContext2D();
         mapAgents(agents);
@@ -41,10 +49,22 @@ public class AgentDrawer extends Canvas {
         }
     }
 
+    /**
+     * Given a collection of agents, transform the agents into a format that
+     * makes them easy to paint on the screen
+     * @param agents - collection of Agents to draw
+     */
     private void mapAgents(Collection<Agent> agents) {
         agentsGUI = agents.stream().map(a -> mapAgent(a)).toList();
     }
 
+    /**
+     * Convert an Agent to a format that makes them easier to paint on the
+     * screen
+     * @param agent - agent to convert to drawing format
+     * @return - returns an AgentToGUI object representing the agent in
+     * a way that makes it easier to draw on the screen.
+     */
     private AgentToGUI mapAgent(Agent agent) {
         Color color;
         switch(agent.getState()) {
@@ -53,10 +73,13 @@ public class AgentDrawer extends Canvas {
             case SICK   -> color = Color.RED;
             default     -> color = Color.DARKBLUE;
         }
-
         return new AgentToGUI(color, agent.getXPos(), agent.getYPos());
     }
 
+    /**
+     * Class represent a "graphical" representation of an agent.
+     * Is essentially just a container for an (x,y) position and a color.
+     */
     private class AgentToGUI {
         public Color color;
         public int xPos;
