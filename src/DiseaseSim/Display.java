@@ -13,6 +13,11 @@ import java.util.List;
 import java.util.TimerTask;
 import java.util.Timer;
 
+/**
+ * Main driver of program, starts up the graphical interface
+ * and all the other components.
+ */
+
 public class Display extends Application {
     private ConfigInfo info;
     private AgentManager manager;
@@ -55,10 +60,15 @@ public class Display extends Application {
             System.exit(0);
         });
 
+        //Start up the graph/logger only if logging is enabled
         if(info.logEnabled) { initLogger(); initGraph(); }
         manager.startAgents();
     }
 
+    /**
+     * Initializes the graph showing how many agents have what kind of
+     * state at what point in time.
+     */
     private void initGraph() {
         graph = new GraphDisplay(300, 300, logger);
         VBox graphHolder = new VBox(graph);
@@ -79,6 +89,10 @@ public class Display extends Application {
         graphStage.show();
     }
 
+    /**
+     * Start up the logging object to display text alerts of when the
+     * states of certain agents change.
+     */
     private void initLogger() {
         logger = new LoggerDisplay(info);
         manager.addLogger(logger);
@@ -97,6 +111,10 @@ public class Display extends Application {
         logStage.show();
     }
 
+    /**
+     * Parse a file and make a configuration info objection from it
+     * @param filename - file to open for parsing
+     */
     private void parseInfo(String filename)  {
         try {
             if(filename != "") {

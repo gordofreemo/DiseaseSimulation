@@ -7,4 +7,4 @@ initialsick 100
 initialimmune 50
 random 5000
 unittime 200
-logenabled t
+logenabled f
