@@ -5,6 +5,11 @@ import javafx.scene.control.TextArea;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 
+/**
+ * Class for making the pane with log information about the various
+ * state changes for the agents.
+ */
+
 public class LoggerDisplay extends TextArea {
     private BlockingDeque<String> output;
     private int logSick;
@@ -23,10 +28,18 @@ public class LoggerDisplay extends TextArea {
         numVulnerable = info.numAgents-info.initImmune;
     }
 
+    /**
+     * Adds a new log to the screen if there is a backlog of logs to add
+     */
     public void updateScreen() {
         if(!output.isEmpty()) appendText(output.pop() + '\n');
     }
 
+    /**
+     * Method for Agents to add a log to the BlockingQueue
+     * @param update - String of log to add
+     * @param state - State the agent changed to, used to update counts
+     */
     public synchronized void receiveUpdate(String update, AgentState state) {
         try {
             output.putFirst(update);
@@ -42,18 +55,30 @@ public class LoggerDisplay extends TextArea {
         }
     }
 
+    /**
+     * @return - number of currently sick agents
+     */
     public int getLogSick() {
         return logSick;
     }
 
+    /**
+     * @return - number of currently immune agents
+     */
     public int getLogImmune() {
         return logImmune;
     }
 
+    /**
+     * @return - number of currently dead agents
+     */
     public int getLogDead() {
         return logDead;
     }
 
+    /**
+     * @return - number of currently vulnerable agents
+     */
     public int getNumVulnerable() {
         return numVulnerable;
     }
