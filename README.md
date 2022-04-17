@@ -78,9 +78,10 @@ DONE:
 - Made AgentManager class to handle initialization of Agents
 - Agents appear to function, message sending/disease spreading works fine
 - Made AgentDrawer class to draw agents on some screen
-- Started a bit of the display
+- Finished the display class 
+- Made the grapher display
+- Made the logging display
+- Made the file parsing work
 
-TO DO: 
-- Make PDF design diagram 
 
 
