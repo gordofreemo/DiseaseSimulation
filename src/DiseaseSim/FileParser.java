@@ -10,17 +10,18 @@ import java.util.Scanner;
  */
 
 public class FileParser {
-    private String fileName;
     private Scanner sc;
     private ConfigInfo info;
 
     public FileParser(String fileName) throws FileNotFoundException {
-        this.fileName = fileName;
         FileReader file = new FileReader(fileName);
         sc = new Scanner(file);
         info = new ConfigInfo();
     }
 
+    /**
+     * Parse the given file and generate the ConfigInfo object
+     */
     public void parseFile() {
         while(sc.hasNextLine()) {
             String line = sc.nextLine();
@@ -32,7 +33,7 @@ public class FileParser {
                     info.dimWidth  = Integer.parseInt(parts[1]);
                     info.dimHeight = Integer.parseInt(parts[2]);
                 }
-                case "exposuredistance" ->  info.exposureDistance = Integer.parseInt(parts[1]);
+                case "exposuredistance" -> info.exposureDistance = Integer.parseInt(parts[1]);
                 case "incubation" -> info.incubation = Integer.parseInt(parts[1]);
                 case "sickness" -> info.sickness = Integer.parseInt(parts[1]);
                 case "recover"  -> info.recover = Double.parseDouble(parts[1]);
@@ -63,6 +64,10 @@ public class FileParser {
         }
     }
 
+    /**
+     * @return - The ConfigInfo object generated from parsing the configuration
+     * file
+     */
     public ConfigInfo getInfo() {
         return info;
     }
