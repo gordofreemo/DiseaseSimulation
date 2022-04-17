@@ -17,28 +17,28 @@ public class LoggerDisplay extends TextArea {
         super();
         output = new LinkedBlockingDeque<>();
         setPrefSize(500,500);
-        logSick = info.initSick;
-        logImmune = info.initImmune;
+        logSick = 0;
+        logImmune = 0;
         logDead = 0;
-        numVulnerable = info.numAgents - logImmune - logSick;
+        numVulnerable = info.numAgents-info.initImmune;
     }
 
     public void updateScreen() {
         if(!output.isEmpty()) appendText(output.pop() + '\n');
     }
 
-    public void receiveUpdate(String update, AgentState state) {
+    public synchronized void receiveUpdate(String update, AgentState state) {
         try {
             output.putFirst(update);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        synchronized (this) {
-            switch(state) {
-                case IMMUNE -> logImmune++;
-                case DEAD   -> logDead++;
-                case SICK   -> {logSick++; numVulnerable--;}
-            }
+        // I have used the incubating state to denote "initially immune"
+        switch(state) {
+            case IMMUNE -> {logImmune++; logSick--;}
+            case DEAD   -> {logDead++; logSick--;}
+            case SICK   -> {logSick++; numVulnerable--;}
+            case INCUBATING -> logImmune++;
         }
     }
 

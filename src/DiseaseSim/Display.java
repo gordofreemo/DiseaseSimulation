@@ -26,7 +26,7 @@ public class Display extends Application {
     @Override
     public void start(Stage primaryStage) {
         List<String> args = getParameters().getRaw();
-        String filename = "resources/randomGridTest.txt";
+        String filename = "resources/grid.txt";
         if(args.size() != 0) filename = args.get(0);
         info = new ConfigInfo();
         parseInfo(filename);
@@ -69,6 +69,13 @@ public class Display extends Application {
         graphStage.setScene(graphScene);
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
         graphStage.setX((bounds.getWidth()) / 8);
+        TimerTask redrawGraph = new TimerTask() {
+            @Override
+            public void run() {
+                graph.repaint();
+            }
+        };
+        new Timer().scheduleAtFixedRate(redrawGraph, 0, info.unitTime);
         graphStage.show();
     }
 
