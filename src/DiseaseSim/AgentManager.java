@@ -136,29 +136,4 @@ public class AgentManager {
     public Collection<Agent> getAgents() {
         return agentList;
     }
-
-
-    public static void main(String[] args) {
-        ConfigInfo info       = new ConfigInfo();
-        info.recover          = 0.95;
-        info.exposureDistance = 20;
-        info.dimHeight        = 5;
-        info.dimWidth         = 5;
-        info.boardType        = BoardType.RANDOM;
-        info.numAgents        = 6;
-        info.initSick         = 1;
-        info.unitTime         = 1000;
-        info.incubation       = 5;
-        info.sickness         = 5;
-
-        AgentManager manager  = new AgentManager(info);
-        manager.initAgents();
-        for(Agent a : manager.agentList) {
-            System.out.println(a + " " + a.getState());
-            System.out.print("Neighbours: ");
-            for(Agent b : a.getNeighbours()) System.out.print(" " + b + " ");
-            System.out.println();
-        }
-        manager.startAgents();
-    }
 }
