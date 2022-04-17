@@ -47,6 +47,7 @@ public class FileParser {
                     info.boardType = BoardType.GRID;
                     info.rows = Integer.parseInt(parts[1]);
                     info.cols = Integer.parseInt(parts[2]);
+                    info.numAgents = info.rows * info.cols;
                 }
                 case "random" -> {
                     info.boardType = BoardType.RANDOM;

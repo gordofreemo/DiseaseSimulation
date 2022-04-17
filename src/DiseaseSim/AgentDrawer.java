@@ -1,5 +1,6 @@
 package DiseaseSim;
 
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import java.util.Collection;
@@ -11,16 +12,15 @@ import java.util.Collection;
  * of agents, and it will draw the agents on the graphics context.
  */
 
-public class AgentDrawer {
+public class AgentDrawer extends Canvas {
     private Collection<AgentToGUI> agentsGUI;
     private double size; //size of radius of circle representing agent (in px)
     private int width;
     private int height;
     private int offset;
 
-    // Note - recommend making the canvas larger than the width/height...
-    // that way stuff doesn't get drawn off the screen
     AgentDrawer(int width, int height, double size) {
+        super(width,height);
         this.width = width;
         this.height = height;
         this.size = size;
@@ -31,7 +31,8 @@ public class AgentDrawer {
         this.offset = offset;
     }
 
-    public void draw(GraphicsContext g, Collection<Agent> agents) {
+    public void draw(Collection<Agent> agents) {
+        GraphicsContext g = this.getGraphicsContext2D();
         mapAgents(agents);
         g.clearRect(0,0,width,height);
         for(AgentToGUI agent : agentsGUI) {

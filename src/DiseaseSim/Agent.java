@@ -95,8 +95,8 @@ public class Agent implements Runnable {
         }
     }
 
-    private void logMessage(String message) {
-        if(logger != null) logger.receiveUpdate(message);
+    private void logMessage(String message, AgentState state) {
+        if(logger != null) logger.receiveUpdate(message, state);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class Agent implements Runnable {
             return agent -> {
                 Runnable event = () -> {
                   agent.setState(AgentState.SICK);
-                  logMessage("Agent " + agent.id + " got sick!");
+                  logMessage("Agent " + agent.id + " got sick!", AgentState.SICK);
                   int numLoops = configInfo.sickness;
                   int time     = configInfo.unitTime;
                   for(int i = 0; i < numLoops; i++) {
@@ -147,9 +147,14 @@ public class Agent implements Runnable {
         public Message handleRecovery() {
             return agent -> {
                 double roll = Math.random();
-                if(roll > configInfo.recover) agent.setState(AgentState.DEAD);
+                AgentState state = AgentState.IMMUNE;
+                if(roll > configInfo.recover) {
+                    agent.setState(AgentState.DEAD);
+                    state = AgentState.DEAD;
+                }
                 else agent.setState(AgentState.IMMUNE);
-                logMessage("Agent " + agent.id + " is " + agent.getState());
+                String str = "Agent " + agent.id + " is " + agent.getState();
+                logMessage(str,state);
             };
         }
     }
