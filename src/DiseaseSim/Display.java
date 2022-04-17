@@ -31,7 +31,7 @@ public class Display extends Application {
     @Override
     public void start(Stage primaryStage) {
         List<String> args = getParameters().getRaw();
-        String filename = "resources/randomGridTest.txt";
+        String filename = "";
         if(args.size() != 0) filename = args.get(0);
         info = new ConfigInfo();
         parseInfo(filename);

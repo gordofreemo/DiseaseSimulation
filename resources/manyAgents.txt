@@ -5,6 +5,6 @@ incubation 7
 sickess 13
 initialsick 100
 initialimmune 50
-random 5000
+random 7000
 unittime 200
 logenabled f

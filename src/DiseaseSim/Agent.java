@@ -98,7 +98,7 @@ public class Agent implements Runnable {
         }
         if(getState() == AgentState.IMMUNE) {
             String message = "Agent " + id + " is IMMUNE";
-            logger.receiveUpdate(message, AgentState.INCUBATING);
+            logMessage(message, AgentState.INCUBATING);
         }
 
         boolean loop = true;
