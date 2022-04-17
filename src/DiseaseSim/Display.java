@@ -26,7 +26,7 @@ public class Display extends Application {
     @Override
     public void start(Stage primaryStage) {
         List<String> args = getParameters().getRaw();
-        String filename = "resources/configtest.txt";
+        String filename = "resources/randomGridTest.txt";
         if(args.size() != 0) filename = args.get(0);
         info = new ConfigInfo();
         parseInfo(filename);
@@ -105,8 +105,8 @@ public class Display extends Application {
                 info = parser.getInfo();
             }
         } catch (FileNotFoundException e) {
-            System.out.println("FILE NOT FOUND / FAILED TO OPEN. EXITING");
-            System.exit(1);
+            System.out.println("FILE NOT FOUND / FAILED TO OPEN. DEFAULT SETTINGS");
+            info = new ConfigInfo();
         }
     }
 }

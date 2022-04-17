@@ -22,7 +22,7 @@ public class ConfigInfo {
         numAgents        = 100;
         initSick         = 1;
         initImmune       = 0;
-        unitTime         = 200;
+        unitTime         = 150;
         logEnabled       = true;
     }
 
